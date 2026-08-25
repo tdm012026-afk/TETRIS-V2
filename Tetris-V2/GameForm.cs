@@ -7,23 +7,18 @@ namespace Tetris_V2
         private const int CellSize = 30;
 
         private int[,] grid = new int[GridWidth, GridHeight];
-        private Tetromino currentBlock; 
+        private Tetromino currentBlock;
+        private readonly TetrominoFactory factory = new TetrominoFactory();
         public GameForm()
         {
             InitializeComponent();
-
-            int[,] shape =
-            {
-                {0, 1, 0 },
-                {1, 1, 1 },
-                {0, 0, 0 }
-            };
-            currentBlock = new Tetromino(shape, Color.Red);
 
             ClientSize = new Size(
                 GridWidth * CellSize,
                 GridHeight * CellSize
                 );
+
+            currentBlock = factory.Create();
         }
 
         protected override void OnPaint(PaintEventArgs e)
