@@ -44,7 +44,7 @@ namespace Tetris_V2
             else
             {
                 LockBlock();
-                ClearCompletedLine();
+                ClearCompletedLines();
                 CreateNewBlock();
             }
 
@@ -66,7 +66,7 @@ namespace Tetris_V2
                 }
             }
         }
-        private void ClearCompletedLine()
+        private void ClearCompletedLines()
         {
             for (int y = 0; y < GridHeight; y++)
             {
@@ -137,6 +137,11 @@ namespace Tetris_V2
             if (e.KeyCode == Keys.Right && CanMoveRight())
             {
                 currentBlock.X++;
+                Invalidate();
+            }
+            if (e.KeyCode == Keys.Down && CanMoveDown())
+            {
+                currentBlock.Y++;
                 Invalidate();
             }
         }
@@ -259,6 +264,31 @@ namespace Tetris_V2
             }
             return true;
         }
+        //private bool CanMoveDown()
+        //{
+        //    for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+        //    {
+        //        for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+        //        {
+        //            if (currentBlock.Shape[row, col] == 1)
+        //            {
+        //                int gridX = currentBlock.X + col;
+        //                int gridY = currentBlock.Y + row + 1;
+
+        //                if(gridY >= GridHeight)
+        //                {
+        //                    return false;
+        //                }
+        //                if (grid[gridX, gridY] != Color.Empty)
+        //                {
+        //                    return false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
+        
         
         
 
