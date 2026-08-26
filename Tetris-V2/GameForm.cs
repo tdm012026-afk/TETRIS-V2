@@ -8,7 +8,7 @@ namespace Tetris_V2
         private const int GridHeight = 20;
         private const int CellSize = 30;
 
-        private int[,] grid = new int[GridWidth, GridHeight];
+        private Color[,] grid = new Color[GridWidth, GridHeight];
         private Tetromino currentBlock;
         private readonly TetrominoFactory factory = new TetrominoFactory();
         private readonly System.Windows.Forms.Timer timer = new();
@@ -57,7 +57,7 @@ namespace Tetris_V2
                         int gridX = currentBlock.X + col;
                         int gridY = currentBlock.Y + row;
 
-                        grid[gridX, gridY] = 1;
+                        grid[gridX, gridY] = currentBlock.Color;
                     }
                 }
             }
@@ -84,7 +84,7 @@ namespace Tetris_V2
                         {
                             return false;
                         }
-                        if (grid[gridX,gridY] == 1)
+                        if (grid[gridX,gridY] != Color.Empty)
                         {
                             return false;
                         }
@@ -145,7 +145,7 @@ namespace Tetris_V2
             {
                 for (int y = 0; y < GridHeight; y++)
                 {
-                    if (grid[x, y] == 1)
+                    if (grid[x, y] != Color.Empty)
                     {
                         int drawX = x * CellSize;
                         int drawY = y * CellSize;
