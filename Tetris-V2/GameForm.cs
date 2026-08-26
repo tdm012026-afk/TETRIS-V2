@@ -150,12 +150,14 @@ namespace Tetris_V2
                         int drawX = x * CellSize;
                         int drawY = y * CellSize;
 
-                        g.FillRectangle(
-                            Brushes.Gray,
-                            drawX,
-                            drawY,
-                            CellSize,
-                            CellSize);
+                        using (Brush brush = new SolidBrush(grid[x, y]))
+
+                            g.FillRectangle(
+                                brush,
+                                drawX,
+                                drawY,
+                                CellSize,
+                                CellSize);
                     }
                 }
             }
