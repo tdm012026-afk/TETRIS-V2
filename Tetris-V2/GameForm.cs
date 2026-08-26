@@ -1,4 +1,5 @@
 using System.Drawing.Text;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Tetris_V2
 {
@@ -17,6 +18,8 @@ namespace Tetris_V2
         public GameForm()
         {
             InitializeComponent();
+
+            KeyDown += GameForm_KeyDown;
 
             timer.Interval = 500;
             timer.Tick += UpdateGame; 
@@ -124,6 +127,19 @@ namespace Tetris_V2
             }
             return true;
         }
+        private void GameForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left && CanMoveLeft())
+            {
+                currentBlock.X--;
+                Invalidate();
+            }
+            if (e.KeyCode == Keys.Right && CanMoveRight())
+            {
+                currentBlock.X++;
+                Invalidate();
+            }
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -193,6 +209,57 @@ namespace Tetris_V2
                 }
             }
         }
+        private bool CanMoveLeft()
+        {
+            for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+            {
+                for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+                {
+                    if (currentBlock.Shape[row, col] == 1)
+                    {
+                        int gridX = currentBlock.X + col - 1;
+                        int gridY = currentBlock.Y + row;
+
+                        if (gridX < 0)
+                        {
+                            return false;
+                        }
+                        if (grid[gridX,gridY] != Color.Empty)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        private bool CanMoveRight()
+        {
+            for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+            {
+                for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+                {
+                    if (currentBlock.Shape[row, col] == 1)
+                    {
+                        int gridX = currentBlock.X + col + 1;
+                        int gridY = currentBlock.Y + row;
+
+                        if(gridX >= GridWidth)
+                        {
+                            return false;
+                        }
+                        if (grid[gridX, gridY] != Color.Empty)
+                        {
+                            return false;
+                        }
+
+
+                    }
+                }
+            }
+            return true;
+        }
+        
         
 
     }
