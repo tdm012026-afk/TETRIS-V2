@@ -41,6 +41,7 @@ namespace Tetris_V2
             else
             {
                 LockBlock();
+                ClearCompletedLine();
                 CreateNewBlock();
             }
 
@@ -58,6 +59,36 @@ namespace Tetris_V2
                         int gridY = currentBlock.Y + row;
 
                         grid[gridX, gridY] = currentBlock.Color;
+                    }
+                }
+            }
+        }
+        private void ClearCompletedLine()
+        {
+            for (int y = 0; y < GridHeight; y++)
+            {
+                bool isFull = true;
+
+                for (int x = 0; x < GridWidth; x++)
+                {
+                    if (grid[x, y] == Color.Empty)
+                    {
+                        isFull = false;
+                        break;
+                    }
+                }
+                if (isFull)
+                {
+                    for (int x = 0; x < GridWidth; x++)
+                    {
+                        grid[x, y] = Color.Empty;
+                    }
+                    for (int moveY = y; moveY < 0; moveY--)
+                    {
+                        for (int x = 0; x < GridWidth; x++)
+                        {
+                            grid[x, moveY] = grid[x, moveY - 1];
+                        }
                     }
                 }
             }
