@@ -1,3 +1,5 @@
+using System.Drawing.Text;
+
 namespace Tetris_V2
 {
     public partial class GameForm : Form
@@ -9,16 +11,87 @@ namespace Tetris_V2
         private int[,] grid = new int[GridWidth, GridHeight];
         private Tetromino currentBlock;
         private readonly TetrominoFactory factory = new TetrominoFactory();
+        private readonly System.Windows.Forms.Timer timer = new();
+
+
         public GameForm()
         {
             InitializeComponent();
+
+            timer.Interval = 500;
+            timer.Tick += UpdateGame; 
+
+
 
             ClientSize = new Size(
                 GridWidth * CellSize,
                 GridHeight * CellSize
                 );
+            CreateNewBlock();
 
+            timer.Start();
+   
+        }
+        private void UpdateGame(object? sender, EventArgs e)
+        {
+            if (CanMoveDown())
+            {
+                currentBlock.Y++;
+            }
+            else
+            {
+                LockBlock();
+                CreateNewBlock();
+            }
+
+            Invalidate();
+        }
+        private void LockBlock()
+        {
+            for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+            {
+                for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+                {
+                    if (currentBlock.Shape[row, col]== 1)
+                    {
+                        int gridX = currentBlock.X + col;
+                        int gridY = currentBlock.Y + row;
+
+                        grid[gridX, gridY] = 1;
+                    }
+                }
+            }
+        }
+        private void CreateNewBlock()
+        {
             currentBlock = factory.Create();
+
+            currentBlock.X = 4;
+            currentBlock.Y = 0;
+        }
+        private bool CanMoveDown()
+        {
+            for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+            {
+                for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+                {
+                    if (currentBlock.Shape[row, col] == 1)
+                    {
+                        int gridX = currentBlock.X + col;
+                        int gridY = currentBlock.Y + row + 1;
+
+                        if (gridY >= GridHeight)
+                        {
+                            return false;
+                        }
+                        if (grid[gridX,gridY] == 1)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -66,6 +139,24 @@ namespace Tetris_V2
                             CellSize);
 
                     } 
+                }
+            }
+            for (int x = 0; x < GridWidth; x++)
+            {
+                for (int y = 0; y < GridHeight; y++)
+                {
+                    if (grid[x, y] == 1)
+                    {
+                        int drawX = x * CellSize;
+                        int drawY = y * CellSize;
+
+                        g.FillRectangle(
+                            Brushes.Gray,
+                            drawX,
+                            drawY,
+                            CellSize,
+                            CellSize);
+                    }
                 }
             }
         }
