@@ -83,17 +83,18 @@ namespace Tetris_V2
                 }
                 if (isFull)
                 {
-                    for (int x = 0; x < GridWidth; x++)
-                    {
-                        grid[x, y] = Color.Empty;
-                    }
-                    for (int moveY = y; moveY < 0; moveY--)
+                    for (int moveY = y; moveY > 0; moveY --)
                     {
                         for (int x = 0; x < GridWidth; x++)
                         {
                             grid[x, moveY] = grid[x, moveY - 1];
                         }
                     }
+                    for(int x = 0; x < GridWidth; x++)
+                    {
+                        grid[x, 0] = Color.Empty;
+                    }
+                    
                 }
             }
         }
@@ -143,6 +144,11 @@ namespace Tetris_V2
             if (e.KeyCode == Keys.Down && CanMoveDown())
             {
                 currentBlock.Y++;
+                Invalidate();
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                RotateBlock();
                 Invalidate();
             }
         }
@@ -260,6 +266,41 @@ namespace Tetris_V2
                         }
 
 
+                    }
+                }
+            }
+            return true;
+        }
+        private void RotateBlock()
+        {
+            int[,] rotatedShape = rotation.Rotate(currentBlock.Shape);
+
+            if (CanRotate(rotatedShape))
+            {
+                currentBlock.Shape = rotatedShape;
+            }
+
+        }
+        private bool CanRotate(int[,] rotatedShape)
+        {
+            for (int row  = 0; row < rotatedShape.GetLength(0); row++)
+            {
+                for (int col = 0; col < rotatedShape.GetLength(1); col++)
+                {
+                    if (rotatedShape[row,col] == 1)
+                    {
+                        int gridX = currentBlock.X + col;
+                        int gridY = currentBlock.Y + row;
+
+                        if( gridX < 0 || gridX >= GridWidth ||
+                            gridY < 0 || gridY >= GridHeight)
+                        {
+                            return false;
+                        }
+                        if (grid[gridX, gridY] != Color.Empty)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
