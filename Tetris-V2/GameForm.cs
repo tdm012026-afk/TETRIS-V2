@@ -8,6 +8,7 @@ namespace Tetris_V2
         private const int GridWidth = 10;
         private const int GridHeight = 20;
         private const int CellSize = 30;
+        private int score = 0;
 
         private Color[,] grid = new Color[GridWidth, GridHeight];
         private Tetromino currentBlock;
@@ -29,7 +30,7 @@ namespace Tetris_V2
 
             ClientSize = new Size(
                 GridWidth * CellSize,
-                GridHeight * CellSize
+                GridHeight * CellSize + 40
                 );
             CreateNewBlock();
 
@@ -45,7 +46,10 @@ namespace Tetris_V2
             else
             {
                 LockBlock();
-                ClearCompletedLines();
+
+                int clearedLines =  ClearCompletedLines();
+                AddScore(clearedLines);
+
                 CreateNewBlock();
             }
 
@@ -67,8 +71,10 @@ namespace Tetris_V2
                 }
             }
         }
-        private void ClearCompletedLines()
+        private int ClearCompletedLines()
         {
+            int clearedLines = 0;
+
             for (int y = 0; y < GridHeight; y++)
             {
                 bool isFull = true;
@@ -83,6 +89,8 @@ namespace Tetris_V2
                 }
                 if (isFull)
                 {
+                    clearedLines++;
+
                     for (int moveY = y; moveY > 0; moveY --)
                     {
                         for (int x = 0; x < GridWidth; x++)
@@ -97,6 +105,7 @@ namespace Tetris_V2
                     
                 }
             }
+            return clearedLines;
         }
         private void CreateNewBlock()
         {
@@ -165,7 +174,7 @@ namespace Tetris_V2
                 {
                     Rectangle rect = new Rectangle(
                         x * CellSize,
-                        y * CellSize,
+                        y * CellSize +40,
                         CellSize,
                         CellSize);
 
@@ -181,7 +190,7 @@ namespace Tetris_V2
                     if (currentBlock.Shape[row, col] == 1)
                     {
                         int drawX = (currentBlock.X + col) * CellSize;
-                        int drawY = (currentBlock.Y + row) * CellSize;
+                        int drawY = (currentBlock.Y + row) * CellSize +40;
 
                         g.FillRectangle(
                             new SolidBrush(currentBlock.Color),
@@ -207,7 +216,7 @@ namespace Tetris_V2
                     if (grid[x, y] != Color.Empty)
                     {
                         int drawX = x * CellSize;
-                        int drawY = y * CellSize;
+                        int drawY = y * CellSize +40;
 
                         using (Brush brush = new SolidBrush(grid[x, y]))
 
@@ -220,6 +229,7 @@ namespace Tetris_V2
                     }
                 }
             }
+            g.DrawString($"Score : {score}", Font, Brushes.Black, 10, 10);
         }
         private bool CanMoveLeft()
         {
@@ -306,7 +316,28 @@ namespace Tetris_V2
             }
             return true;
         }
-       
+        private void AddScore(int clearedLines)
+        {
+            switch (clearedLines)
+            {
+                case 1:
+                    score += 100;
+                    break;
+
+                case 2:
+                    score += 300;
+                    break;
+                case 3:
+                    score += 500;
+                    break;
+                case 4:
+                    score += 800;
+                    break;
+                
+
+            }
+        }
+
 
 
 
