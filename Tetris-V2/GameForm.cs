@@ -9,6 +9,7 @@ namespace Tetris_V2
         private const int GridHeight = 20;
         private const int CellSize = 30;
         private int score = 0;
+        private bool gameOver = false;
 
         private Color[,] grid = new Color[GridWidth, GridHeight];
         private Tetromino currentBlock;
@@ -39,6 +40,11 @@ namespace Tetris_V2
         }
         private void UpdateGame(object? sender, EventArgs e)
         {
+            if (gameOver)
+            {
+                return;
+            }
+
             if (CanMoveDown())
             {
                 currentBlock.Y++;
@@ -113,6 +119,11 @@ namespace Tetris_V2
 
             currentBlock.X = 4;
             currentBlock.Y = 0;
+
+            if (!CanSpawnBlock())
+            {
+                gameOver = true;
+            }
         }
         private bool CanMoveDown()
         {
@@ -337,6 +348,27 @@ namespace Tetris_V2
 
             }
         }
+        private bool CanSpawnBlock()
+        {
+            for (int row = 0; row < currentBlock.Shape.GetLength(0); row++)
+            {
+                for (int col = 0; col < currentBlock.Shape.GetLength(1); col++)
+                {
+                    if (currentBlock.Shape[row, col] == 1)
+                    {
+                        int gridX = currentBlock.X + col;
+                        int gridY = currentBlock.Y + row;
+
+                        if (grid[gridX, gridY] != Color.Empty)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        
 
 
 
