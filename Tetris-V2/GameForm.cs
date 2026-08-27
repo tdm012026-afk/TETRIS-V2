@@ -12,6 +12,7 @@ namespace Tetris_V2
         private Color[,] grid = new Color[GridWidth, GridHeight];
         private Tetromino currentBlock;
         private readonly TetrominoFactory factory = new TetrominoFactory();
+        private readonly TetrominoRotation rotation = new TetrominoRotation();
         private readonly System.Windows.Forms.Timer timer = new();
 
 
