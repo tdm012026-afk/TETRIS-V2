@@ -171,6 +171,11 @@ namespace Tetris_V2
                 RotateBlock();
                 Invalidate();
             }
+            if (e.KeyCode == Keys.R)
+            {
+                RestartGame();
+                Invalidate();
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -240,7 +245,19 @@ namespace Tetris_V2
                     }
                 }
             }
-            g.DrawString($"Score : {score}", Font, Brushes.Black, 10, 10);
+            g.DrawString($"Score : {score}", Font, Brushes.Black, 10, 10 );
+               
+            if (gameOver)
+            {
+                using (Font gameOverFont = new Font("Arial", 24, FontStyle.Bold))
+                {
+                    g.DrawString("GAME OVER", gameOverFont, Brushes.DarkGoldenrod, 65, 250);
+                    g.DrawString("Pres R to restart", gameOverFont, Brushes.DarkViolet, 20, 300);
+                }
+                
+
+            }
+ 
         }
         private bool CanMoveLeft()
         {
@@ -368,11 +385,23 @@ namespace Tetris_V2
             }
             return true;
         }
+        private void RestartGame()
+        {
+            score = 0; 
+
+            for(int x = 0; x < GridWidth; x++)
+            {
+                for (int y = 0; y < GridHeight; y++)
+                {
+                    grid[x, y] = Color.Empty;
+                }
+            }
+            gameOver = false;
+
+            CreateNewBlock();
+
+        }
         
-
-
-
-
 
     }
 }
