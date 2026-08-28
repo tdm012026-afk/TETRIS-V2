@@ -1,4 +1,20 @@
-
+/*
+ * TETRIS V2
+ *
+ * Controls:
+ * Left Arrow  - Move left
+ * Right Arrow - Move right
+ * Down Arrow  - Move down faster
+ * Up Arrow    - Rotate block
+ * P            - Pause / Resume
+ * R            - Restart game
+ *
+ * Scoring:
+ * 1 line = 100 points
+ * 2 lines = 300 points
+ * 3 lines = 500 points
+ * 4 lines = 800 points
+ */
 
 namespace Tetris_V2
 {
