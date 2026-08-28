@@ -23,6 +23,8 @@ namespace Tetris_V2
         {
             InitializeComponent();
 
+            DoubleBuffered = true;    // removes refreshing every 500 ms by buforing 
+
             KeyDown += GameForm_KeyDown;
 
             timer.Interval = 500;
