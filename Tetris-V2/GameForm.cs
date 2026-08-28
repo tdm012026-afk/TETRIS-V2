@@ -1,5 +1,4 @@
-using System.Drawing.Text;
-using System.Reflection.Metadata.Ecma335;
+
 
 namespace Tetris_V2
 {
@@ -23,7 +22,7 @@ namespace Tetris_V2
         {
             InitializeComponent();
 
-            DoubleBuffered = true;    // removes refreshing every 500 ms by buforing 
+            DoubleBuffered = true;    // removes refreshing every 500 ms by bufering 
 
             KeyDown += GameForm_KeyDown;
 
@@ -258,7 +257,7 @@ namespace Tetris_V2
                 }
             }
             g.DrawString($"Score : {score}", Font, Brushes.Black, 10, 10 );
-            g.DrawString("Pres P for Pause", Font, Brushes.Black, 150, 10);
+            g.DrawString("Press P for Pause", Font, Brushes.Black, 150, 10);
                
             if (gameOver)
             {
