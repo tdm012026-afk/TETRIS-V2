@@ -10,6 +10,7 @@ namespace Tetris_V2
         private const int CellSize = 30;
         private int score = 0;
         private bool gameOver = false;
+        private bool isPaused = false;
 
         private Color[,] grid = new Color[GridWidth, GridHeight];
         private Tetromino currentBlock;
@@ -41,6 +42,10 @@ namespace Tetris_V2
         private void UpdateGame(object? sender, EventArgs e)
         {
             if (gameOver)
+            {
+                return;
+            }
+            if (isPaused)
             {
                 return;
             }
@@ -176,6 +181,11 @@ namespace Tetris_V2
                 RestartGame();
                 Invalidate();
             }
+            if(e.KeyCode == Keys.P)
+            {
+                isPaused = !isPaused;
+                Invalidate();
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -246,13 +256,14 @@ namespace Tetris_V2
                 }
             }
             g.DrawString($"Score : {score}", Font, Brushes.Black, 10, 10 );
+            g.DrawString("Pres P for Pause", Font, Brushes.Black, 150, 10);
                
             if (gameOver)
             {
                 using (Font gameOverFont = new Font("Arial", 24, FontStyle.Bold))
                 {
                     g.DrawString("GAME OVER", gameOverFont, Brushes.DarkGoldenrod, 65, 250);
-                    g.DrawString("Pres R to restart", gameOverFont, Brushes.DarkViolet, 20, 300);
+                    g.DrawString("Press R to restart", gameOverFont, Brushes.DarkViolet, 20, 300);
                 }
                 
 
